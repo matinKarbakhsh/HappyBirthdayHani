@@ -1,237 +1,3 @@
-<!--<!DOCTYPE html>-->
-<!--<html lang="fa" dir="rtl">-->
-<!--<head>-->
-<!--<meta charset="UTF-8" />-->
-<!--<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover" />-->
-<!--<title>🎂 ماموریت هانیه ۱۹</title>-->
-<!--<meta name="description" content="یک بازی-تجربه‌ی تعاملی و لوکس برای جشن تولد نوزده‌سالگی هانیه." />-->
-
-<!--&lt;!&ndash; فونت گوگل: Vazirmatn — فونت فارسی مدرن برای عنوان‌ها، متن اصلی و HUD &ndash;&gt;-->
-<!--<link rel="preconnect" href="https://fonts.googleapis.com">-->
-<!--<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>-->
-<!--<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">-->
-
-<!--<link rel="stylesheet" href="style.css" />-->
-<!--</head>-->
-<!--<body>-->
-
-<!--&lt;!&ndash; ===================== لایه‌های محیطی سراسری ===================== &ndash;&gt;-->
-<!--&lt;!&ndash; کانواس تمام‌صفحه برای ذرات شناور پس‌زمینه &ndash;&gt;-->
-<!--<canvas id="particle-canvas" aria-hidden="true"></canvas>-->
-<!--&lt;!&ndash; کانواس تمام‌صفحه برای انفجار کانفتی &ndash;&gt;-->
-<!--<canvas id="confetti-canvas" aria-hidden="true"></canvas>-->
-<!--&lt;!&ndash; کانواس تمام‌صفحه برای صحنه‌ی آتش‌بازی &ndash;&gt;-->
-<!--<canvas id="fireworks-canvas" aria-hidden="true"></canvas>-->
-<!--&lt;!&ndash; نور نرمی که دنبال نشانگر ماوس می‌آید &ndash;&gt;-->
-<!--<div id="cursor-glow" aria-hidden="true"></div>-->
-<!--&lt;!&ndash; ظرفی که قلب‌های شناور داخلش ساخته می‌شوند &ndash;&gt;-->
-<!--<div id="hearts-layer" aria-hidden="true"></div>-->
-<!--&lt;!&ndash; میدان ستاره‌ها برای صحنه‌ی «فوت کردن شمع» &ndash;&gt;-->
-<!--<div id="star-field" aria-hidden="true"></div>-->
-
-<!--&lt;!&ndash; ===================== نوار وضعیت ماموریت (HUD) ===================== &ndash;&gt;-->
-<!--<header id="mission-hud" class="hidden">-->
-<!--  <div class="hud-inner">-->
-<!--    <span class="hud-tag">ماموریت</span>-->
-<!--    <span class="hud-title">هانیه&nbsp;•&nbsp;۱۹</span>-->
-<!--    <div class="hud-track" role="progressbar" aria-label="پیشرفت ماموریت" aria-valuemin="0" aria-valuemax="9">-->
-<!--      <div id="hud-fill" class="hud-fill"></div>-->
-<!--    </div>-->
-<!--    <span class="hud-level"><span id="hud-level-num">0</span>/9</span>-->
-<!--  </div>-->
-<!--</header>-->
-
-<!--<main id="app">-->
-
-<!--  &lt;!&ndash; ============================================================ &ndash;&gt;-->
-<!--  &lt;!&ndash; صحنه ۰ — خوش‌آمدگویی &ndash;&gt;-->
-<!--  &lt;!&ndash; ============================================================ &ndash;&gt;-->
-<!--  <section class="scene" id="scene-welcome" data-scene="0">-->
-<!--    <div class="glass-card entrance">-->
-<!--      <p class="eyebrow">عملیات فوق‌محرمانه‌ی تولد</p>-->
-<!--      <h1 class="hero-title glitch-hover">🎂 ماموریت هانیه ۱۹</h1>-->
-<!--      <p class="subtitle">-->
-<!--        امروز یک روز معمولی نیست...<br />-->
-<!--        امروز یک نفر فوق‌العاده <span class="accent-pink">۱۹</span> ساله می‌شود.-->
-<!--      </p>-->
-<!--      <button class="btn btn-primary ripple" id="btn-start-mission">-->
-<!--        <span>شروع ماموریت</span>-->
-<!--      </button>-->
-<!--      <p class="micro-hint">هدفون توصیه می‌شود. تنقلات اختیاری‌ست. خوش‌گذرونی اجباری‌ست.</p>-->
-<!--    </div>-->
-<!--  </section>-->
-
-<!--  &lt;!&ndash; ============================================================ &ndash;&gt;-->
-<!--  &lt;!&ndash; صحنه ۱ — بررسی امنیتی &ndash;&gt;-->
-<!--  &lt;!&ndash; ============================================================ &ndash;&gt;-->
-<!--  <section class="scene" id="scene-security" data-scene="1">-->
-<!--    <div class="glass-card">-->
-<!--      <p class="eyebrow warning-blink">⚠ سیستم امنیتی تولد فعال شد</p>-->
-<!--      <h2 class="section-title">فقط دوست‌های واقعی می‌تونن ادامه بدن.</h2>-->
-
-<!--      <div class="loader-console">-->
-<!--        <p id="security-log" class="console-log">در حال راه‌اندازی فایروال دوستی...</p>-->
-<!--        <div class="progress-bar-outer">-->
-<!--          <div id="security-progress" class="progress-bar-inner"></div>-->
-<!--        </div>-->
-<!--        <p id="security-status" class="console-status">در حال اسکن...</p>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </section>-->
-
-<!--  &lt;!&ndash; ============================================================ &ndash;&gt;-->
-<!--  &lt;!&ndash; صحنه ۲ — هدیه را بگیر &ndash;&gt;-->
-<!--  &lt;!&ndash; ============================================================ &ndash;&gt;-->
-<!--  <section class="scene" id="scene-chase" data-scene="2">-->
-<!--    <div class="scene-heading">-->
-<!--      <p class="eyebrow">هدف ۰۲</p>-->
-<!--      <h2 class="section-title">هدیه‌ی فراری رو بگیر</h2>-->
-<!--      <p class="subtitle-sm">خجالتیه. گیرش بنداز.</p>-->
-<!--    </div>-->
-<!--    <div class="chase-arena" id="chase-arena">-->
-<!--      <button class="runaway-gift" id="runaway-gift" aria-label="گرفتن هدیه">🎁</button>-->
-<!--      <p id="chase-taunt" class="chase-taunt"></p>-->
-<!--    </div>-->
-<!--  </section>-->
-
-<!--  &lt;!&ndash; ============================================================ &ndash;&gt;-->
-<!--  &lt;!&ndash; صحنه ۳ — ترکوندن بادکنک‌ها &ndash;&gt;-->
-<!--  &lt;!&ndash; ============================================================ &ndash;&gt;-->
-<!--  <section class="scene" id="scene-balloons" data-scene="3">-->
-<!--    <div class="scene-heading">-->
-<!--      <p class="eyebrow">هدف ۰۳</p>-->
-<!--      <h2 class="section-title">همه‌ی بادکنک‌ها رو بترکون</h2>-->
-<!--      <p class="balloon-counter"><span id="balloon-count">0</span> / 15</p>-->
-<!--    </div>-->
-<!--    <div class="balloon-field" id="balloon-field"></div>-->
-<!--  </section>-->
-
-<!--  &lt;!&ndash; ============================================================ &ndash;&gt;-->
-<!--  &lt;!&ndash; صحنه ۴ — باز کردن هدیه &ndash;&gt;-->
-<!--  &lt;!&ndash; ============================================================ &ndash;&gt;-->
-<!--  <section class="scene" id="scene-gift" data-scene="4">-->
-<!--    <div class="scene-heading">-->
-<!--      <p class="eyebrow">هدف ۰۴</p>-->
-<!--      <h2 class="section-title">هدیه رو باز کن</h2>-->
-<!--      <p class="subtitle-sm">این هدیه مال هانیه‌ست.</p>-->
-<!--    </div>-->
-<!--    <div class="gift-stage">-->
-<!--      <button class="giant-gift" id="giant-gift" aria-label="باز کردن هدیه">-->
-<!--        <span class="gift-emoji">🎁</span>-->
-<!--        <span class="gift-shockwave"></span>-->
-<!--      </button>-->
-<!--      <div class="gift-progress-track">-->
-<!--        <div id="gift-progress-fill" class="gift-progress-fill"></div>-->
-<!--      </div>-->
-<!--      <p class="micro-hint"><span id="gift-clicks-left">10</span> بار دیگه کلیک کن</p>-->
-<!--    </div>-->
-<!--  </section>-->
-
-<!--  &lt;!&ndash; ============================================================ &ndash;&gt;-->
-<!--  &lt;!&ndash; صحنه ۵ — جشن تولد &ndash;&gt;-->
-<!--  &lt;!&ndash; ============================================================ &ndash;&gt;-->
-<!--  <section class="scene" id="scene-celebration" data-scene="5">-->
-<!--    <div class="celebration-content">-->
-<!--      <div class="cake-wrap">-->
-<!--        <div class="cake" aria-hidden="true">-->
-<!--          <div class="flame"></div>-->
-<!--          <div class="candle"></div>-->
-<!--          <div class="cake-top"></div>-->
-<!--          <div class="cake-mid"></div>-->
-<!--          <div class="cake-base"></div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--      <h1 class="mega-title">🎉 تولدت مبارک هانیه 🎉</h1>-->
-<!--      <p class="subtitle">به لِوِل ۱۹ خوش اومدی.</p>-->
-<!--      <button class="btn btn-primary ripple" id="btn-to-candle">ادامه</button>-->
-<!--    </div>-->
-<!--  </section>-->
-
-<!--  &lt;!&ndash; ============================================================ &ndash;&gt;-->
-<!--  &lt;!&ndash; صحنه ۶ — فوت کردن شمع &ndash;&gt;-->
-<!--  &lt;!&ndash; ============================================================ &ndash;&gt;-->
-<!--  <section class="scene" id="scene-candle" data-scene="6">-->
-<!--    <div class="scene-heading">-->
-<!--      <p class="eyebrow">آخرین ماموریت</p>-->
-<!--      <h2 class="section-title">آرزو کن، بعد شمع رو فوت کن</h2>-->
-<!--      <p class="subtitle-sm" id="mic-hint">توی میکروفون فوت کن — یا فقط دکمه رو بزن.</p>-->
-<!--    </div>-->
-<!--    <div class="candle-stage">-->
-<!--      <div class="single-candle" id="single-candle">-->
-<!--        <div class="flame-lit" id="flame-lit"></div>-->
-<!--        <div class="wick"></div>-->
-<!--        <div class="wax"></div>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--    <button class="btn btn-secondary ripple" id="btn-blow">فوت کردن شمع</button>-->
-<!--  </section>-->
-
-<!--  &lt;!&ndash; ============================================================ &ndash;&gt;-->
-<!--  &lt;!&ndash; صحنه ۷ — پیام پایانی &ndash;&gt;-->
-<!--  &lt;!&ndash; ============================================================ &ndash;&gt;-->
-<!--  <section class="scene" id="scene-final" data-scene="7">-->
-<!--    <div class="glass-card final-card">-->
-<!--      <h1 class="final-title">❤️ نوزده‌سالگیت مبارک هانیه ❤️</h1>-->
-<!--      <p id="typing-message" class="typing-message"></p>-->
-<!--      <button class="btn btn-primary ripple hidden" id="btn-to-secret">یه چیز دیگه هم هست...</button>-->
-<!--    </div>-->
-<!--  </section>-->
-
-<!--  &lt;!&ndash; ============================================================ &ndash;&gt;-->
-<!--  &lt;!&ndash; صحنه ۸ — سورپرایز مخفی &ndash;&gt;-->
-<!--  &lt;!&ndash; ============================================================ &ndash;&gt;-->
-<!--  <section class="scene" id="scene-secret" data-scene="8">-->
-<!--    <div class="glass-card">-->
-<!--      <p class="eyebrow">محرمانه</p>-->
-<!--      <h2 class="section-title">یه راز آخر هم مونده.</h2>-->
-<!--      <button class="btn btn-primary ripple" id="btn-open-secret">باز کردن هدیه‌ی مخفی</button>-->
-<!--    </div>-->
-<!--  </section>-->
-
-<!--</main>-->
-
-<!--&lt;!&ndash; ===================== مودال سورپرایز مخفی ===================== &ndash;&gt;-->
-<!--<div class="modal-overlay hidden" id="secret-modal">-->
-<!--  <div class="modal-box glass-card">-->
-<!--    <button class="modal-close" id="modal-close" aria-label="بستن">✕</button>-->
-<!--    <h3 class="section-title">برای هانیه 💌</h3>-->
-
-<!--    &lt;!&ndash; عکس قابل‌ویرایش: فایل assets/images/secret-photo.jpg را جایگزین کنید &ndash;&gt;-->
-<!--    <img id="secret-image" class="secret-image" src="assets/images/secret-photo.jpg" alt="یک عکس خاص برای هانیه"-->
-<!--         onerror="this.style.display='none'; document.getElementById('secret-image-fallback').style.display='flex';" />-->
-<!--    <div id="secret-image-fallback" class="secret-media-fallback">-->
-<!--      <span>📷</span>-->
-<!--      <p>عکست رو تو مسیر <code>assets/images/secret-photo.jpg</code> بذار</p>-->
-<!--    </div>-->
-
-<!--    &lt;!&ndash; ویدیوی قابل‌ویرایش: فایل assets/video/secret-video.mp4 را جایگزین کنید &ndash;&gt;-->
-<!--&lt;!&ndash;    <video id="secret-video" class="secret-video" controls&ndash;&gt;-->
-<!--&lt;!&ndash;           onerror="this.style.display='none'; document.getElementById('secret-video-fallback').style.display='flex';">&ndash;&gt;-->
-<!--&lt;!&ndash;      <source src="assets/video/secret-video.mp4" type="video/mp4" />&ndash;&gt;-->
-<!--&lt;!&ndash;    </video>&ndash;&gt;-->
-<!--&lt;!&ndash;    <div id="secret-video-fallback" class="secret-media-fallback">&ndash;&gt;-->
-<!--&lt;!&ndash;      <span>🎬</span>&ndash;&gt;-->
-<!--&lt;!&ndash;      <p>ویدیوت رو تو مسیر <code>assets/video/secret-video.mp4</code> بذار</p>&ndash;&gt;-->
-<!--&lt;!&ndash;    </div>&ndash;&gt;-->
-
-<!--    &lt;!&ndash; پیام قابل‌ویرایش &ndash;&gt;-->
-<!--    <p class="secret-message" id="secret-message">-->
-<!--      هانیه، از همون روزی که دیدمت، زندگی برام روشن‌تر شد. ممنون بابت هر خنده،-->
-<!--      هر گپ نیمه‌شب، و هر خاطره‌ای که با هم ساختیم. به سلامتی نوزده‌سالگی و-->
-<!--      همه‌ی چیزهای زیبایی که هنوز در راهه. بی‌نهایت دوستت دارم. 💜-->
-<!--    </p>-->
-<!--  </div>-->
-<!--</div>-->
-
-<!--&lt;!&ndash; کنترل صدا &ndash;&gt;-->
-<!--<div id="control-dock">-->
-<!--  <button id="btn-mute" class="dock-btn" title="روشن یا خاموش کردن صدا" aria-label="روشن یا خاموش کردن صدا">🔊</button>-->
-<!--</div>-->
-
-<!--<script src="script.js"></script>-->
-<!--</body>-->
-<!--</html>-->
-
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
@@ -430,12 +196,22 @@
     <button class="modal-close" id="modal-close" aria-label="بستن">✕</button>
     <h3 class="section-title">برای هانیه 💌</h3>
 
-    <!-- عکس قابل‌ویرایش: فایلت رو با نام secret-photo با پسوند jpg/jpeg/png/webp/gif
-         داخل assets/images/ بذار — کد به‌صورت خودکار امتحانش می‌کنه -->
-    <img id="secret-image" class="secret-image" alt="یک عکس خاص برای هانیه" style="display:none;" />
+    <!-- عکس قابل‌ویرایش: فایل assets/images/secret-photo.jpg را جایگزین کنید -->
+    <img id="secret-image" class="secret-image" src="assets/images/secret-photo.jpg" alt="یک عکس خاص برای هانیه"
+         onerror="this.style.display='none'; document.getElementById('secret-image-fallback').style.display='flex';" />
     <div id="secret-image-fallback" class="secret-media-fallback">
       <span>📷</span>
-      <p>عکست رو با نام <code>secret-photo</code> (پسوند jpg، jpeg، png، webp یا gif) تو مسیر <code>assets/images/</code> بذار</p>
+      <p>عکست رو تو مسیر <code>assets/images/secret-photo.jpg</code> بذار</p>
+    </div>
+
+     ویدیوی قابل‌ویرایش: فایل assets/video/secret-video.mp4 را جایگزین کنید
+    <video id="secret-video" class="secret-video" controls
+           onerror="this.style.display='none'; document.getElementById('secret-video-fallback').style.display='flex';">
+      <source src="assets/video/secret-video.mp4" type="video/mp4" />
+    </video>
+    <div id="secret-video-fallback" class="secret-media-fallback">
+      <span>🎬</span>
+      <p>ویدیوت رو تو مسیر <code>assets/video/secret-video.mp4</code> بذار</p>
     </div>
 
     <!-- پیام قابل‌ویرایش -->
@@ -455,3 +231,5 @@
 <script src="script.js"></script>
 </body>
 </html>
+
+
