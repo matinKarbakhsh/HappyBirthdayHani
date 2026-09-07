@@ -481,7 +481,7 @@
   const CHASE_TAUNTS = ["خیلی کندی 😂", "چیزی نمونده!", "تلاش خوبی بود!", "خیلی نزدیک بود!", "نچ!"];
   let chaseInitialized = false;
   let dodgeCount = 0;
-  const DODGES_REQUIRED = 10;
+  const DODGES_REQUIRED = 5;
   let giftCatchable = false;
 
   function initChase() {
@@ -507,11 +507,7 @@
       setTimeout(() => taunt.classList.remove("show"), 700);
     }
 
-    let fleeing = false;
-
     function dodge() {
-      if (fleeing) return; // prevent rapid-fire dodges while the gift is mid-flee
-      fleeing = true;
       dodgeCount++;
       Audio2.boing();
       showTaunt();
@@ -520,31 +516,16 @@
         giftCatchable = true;
         gift.style.filter = "drop-shadow(0 0 26px rgba(255, 209, 102, 0.9))";
       }
-      // Cooldown slightly longer than the CSS left/top transition (0.22s)
-      // so the box visibly finishes its move before it can flee again.
-      setTimeout(() => {
-        fleeing = false;
-      }, 320);
-    }
-
-    function distanceToGift(clientX, clientY) {
-      const r = gift.getBoundingClientRect();
-      const cx = r.left + r.width / 2;
-      const cy = r.top + r.height / 2;
-      return Math.hypot(clientX - cx, clientY - cy);
     }
 
     // Desktop: dodge when the pointer gets close to the gift.
     arena.addEventListener("pointermove", (e) => {
       if (giftCatchable) return;
-      if (distanceToGift(e.clientX, e.clientY) < 90) dodge();
-    });
-
-    // Touch/tablet: a tap doesn't need to be a perfect hit — landing
-    // within a slightly larger radius still counts as a dodge attempt.
-    arena.addEventListener("pointerdown", (e) => {
-      if (giftCatchable || e.pointerType !== "touch") return;
-      if (distanceToGift(e.clientX, e.clientY) < 110) dodge();
+      const r = gift.getBoundingClientRect();
+      const cx = r.left + r.width / 2;
+      const cy = r.top + r.height / 2;
+      const dist = Math.hypot(e.clientX - cx, e.clientY - cy);
+      if (dist < 90) dodge();
     });
 
     gift.addEventListener("click", () => {
